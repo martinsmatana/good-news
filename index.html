@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Year of Good News — Smatana</title>
+<meta name="description" content="Real positive stories from around the world, retold as textile art. From illustrated book to animated series.">
+<link rel="preconnect" href="https://api.fontshare.com">
+<link href="https://api.fontshare.com/v2/css?f[]=cabinet-grotesk@200,400,500,700,800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+<script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+
+<style>
+/* ============ SONDA FONT ============ */
+@font-face{font-family:'Sonda';src:url('fonts/SondaTrial-Black.woff2') format('woff2');font-weight:900;font-display:swap}
+@font-face{font-family:'Sonda';src:url('fonts/SondaTrial-Bold.woff2') format('woff2');font-weight:700;font-display:swap}
+@font-face{font-family:'Sonda';src:url('fonts/SondaTrial-Medium.woff2') format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:'Sonda';src:url('fonts/SondaTrial-Regular.woff2') format('woff2');font-weight:400;font-display:swap}
+
+/* ============ RESET ============ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{
+  font-family:'Cabinet Grotesk',-apple-system,system-ui,sans-serif;
+  font-weight:400;color:#1c1108;background:#faf3df;
+  overflow-x:hidden;line-height:1.6;font-size:17px;
+  -webkit-font-smoothing:antialiased;
+}
+body{cursor:none}
+@media(max-width:900px){body{cursor:auto}}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block;user-select:none}
+button{font:inherit}
+::selection{background:#c97558;color:#fff}
+
+/* ============ CURSOR ============ */
+.cursor,.cursor-dot{position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);will-change:transform}
+.cursor{
+  width:38px;height:38px;
+  border:1.5px solid #fff;border-radius:50%;
+  mix-blend-mode:difference;
+  transition:width .4s cubic-bezier(.2,.8,.2,1),height .4s cubic-bezier(.2,.8,.2,1);
+}
+.cursor.is-hover{width:78px;height:78px}
+.cursor-dot{width:5px;height:5px;background:#fff;border-radius:50%;mix-blend-mode:difference}
+@media(max-width:900px){.cursor,.cursor-dot{display:none}}
+
+/* ============ SCROLL PROGRESS ============ */
+.scroll-progress{
+  position:fixed;top:0;left:0;width:0%;height:3px;
+  background:linear-gradient(90deg,#e8d586,#a8c498,#c97558,#e2b6a0,#d6b5d8,#a3b5cf);
+  z-index:1000;
+}
+
+/* ============ DOTS NAV ============ */
+.dots-nav{
+  position:fixed;right:22px;top:50%;transform:translateY(-50%);
+  z-index:100;display:flex;flex-direction:column;gap:14px;
+  mix-blend-mode:difference;
+}
+.dots-nav button{
+  width:10px;height:10px;border-radius:50%;
+  border:1.5px solid #fff;background:transparent;
+  cursor:pointer;padding:0;
+  transition:all .4s cubic-bezier(.2,.8,.2,1);
+  position:relative;
+}
+.dots-nav button:hover{background:#fff}
+.dots-nav button.active{width:36px;border-radius:6px;background:#fff}
+.dots-nav button[data-label]::before{
+  content:attr(data-label);
+  position:absolute;right:24px;top:50%;transform:translateY(-50%) translateX(8px);
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:10px;font-weight:700;letter-spacing:.18em;text-transform:lowercase;
+  color:#fff;background:#000;
+  padding:.45rem .7rem;border-radius:4px;
+  white-space:nowrap;opacity:0;
+  transition:opacity .3s,transform .3s;pointer-events:none;
+}
+.dots-nav button:hover[data-label]::before{opacity:1;transform:translateY(-50%) translateX(0)}
+@media(max-width:900px){.dots-nav{display:none}}
+
+/* ============ SECTIONS — soft pastel palette ============ */
+section{
+  position:relative;
+  padding:14vh 7vw;
+  z-index:2;
+  background:var(--section-bg);
+  color:var(--section-text,#1c1108);
+  transition:background-color .8s cubic-bezier(.2,.8,.2,1);
+}
+section.tight{padding:10vh 7vw}
+
+/* Soft, muted, handmade-friendly palette */
+.hero          {--section-bg:#faf3df;--section-fg:#c97558;--section-text:#1c1108}
+.bg-cream      {--section-bg:#faf3df;--section-text:#1c1108}
+.bg-paper      {--section-bg:#f5ecd0;--section-text:#1c1108}
+.bg-white      {--section-bg:#fdfaf0;--section-text:#1c1108}
+.bg-rose       {--section-bg:#efd6cf;--section-text:#1c1108}
+.bg-peach      {--section-bg:#f0dcc5;--section-text:#1c1108}
+.bg-yellow     {--section-bg:#f5ebc3;--section-text:#1c1108}
+.bg-yellowsoft {--section-bg:#fbf3d4;--section-text:#1c1108}
+.bg-mint       {--section-bg:#dee5d0;--section-text:#1c1108}
+.bg-sage       {--section-bg:#cad6bb;--section-text:#1c1108}
+.bg-bluesoft   {--section-bg:#d6dee7;--section-text:#1c1108}
+.bg-blue       {--section-bg:#bbc6d4;--section-text:#1c1108}
+.bg-beige      {--section-bg:#e3d6c0;--section-text:#1c1108}
+.bg-lichen     {--section-bg:#d4d5b8;--section-text:#1c1108}
+.bg-dark       {--section-bg:#2a1f18;--section-text:#faf3df}
+.bg-black      {--section-bg:#0a0a0a;--section-text:#faf3df}
+
+.container{max-width:1280px;margin:0 auto;width:100%}
+
+/* ============ DISPLAY HEADINGS — SONDA (no commas / periods / 0 / @ / &) ============ */
+.display{
+  font-family:'Sonda','Cabinet Grotesk',sans-serif;
+  font-weight:900;
+  font-size:clamp(56px,10vw,160px);
+  line-height:1;
+  letter-spacing:.005em;
+  text-transform:lowercase;
+  margin:0 0 6vh;
+  color:var(--section-fg);
+  hyphens:none;word-break:keep-all;overflow-wrap:normal;
+}
+.display em{font-style:normal;font-weight:900;color:inherit}
+.display.smaller{font-size:clamp(44px,7vw,108px)}
+.display.stacked{display:flex;flex-direction:column;align-items:flex-start;line-height:.95;gap:.05em}
+.display.stacked .line{display:block}
+
+/* ============ HERO TITLE — stacked A / YEAR / of / GOOD / NEWS ============ */
+.hero-title{
+  font-family:'Sonda','Cabinet Grotesk',sans-serif;
+  font-weight:900;
+  text-transform:lowercase;
+  letter-spacing:.005em;
+  display:flex;flex-direction:column;align-items:center;
+  margin:-4vh auto 4vh;
+  perspective:1200px;
+  line-height:1;
+}
+.hero-title .word,
+.hero-title .article,
+.hero-title .of{
+  display:block;
+  font-family:'Sonda','Cabinet Grotesk',sans-serif;
+  text-transform:lowercase;
+  letter-spacing:.005em;
+  padding:.05em .08em;
+  will-change:transform;
+}
+.hero-title .word{
+  font-weight:900;
+  font-size:clamp(72px,13vw,180px);
+  line-height:1;
+}
+.hero-title .article,
+.hero-title .of{
+  font-weight:900;
+  font-size:clamp(34px,4.8vw,64px);
+  line-height:1;
+}
+/* tuck "a" close to "year" baseline; center "of" symmetrically between year and good */
+.hero-title .article{margin-bottom:-.05em}
+.hero-title .of{margin:.1em 0}
+.hero-title .ch{display:inline-block;will-change:transform,opacity}
+
+/* HERO subtitle */
+.hero-subtitle{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:500;font-size:11px;
+  line-height:1.3;letter-spacing:.32em;text-transform:uppercase;
+  color:#75604a;opacity:.7;
+  margin:0 0 6vh;
+  display:flex;align-items:center;gap:.8rem;justify-content:center;
+}
+.hero-subtitle::before,.hero-subtitle::after{content:"";width:24px;height:1px;background:currentColor;opacity:.6}
+
+/* BODY TEXT */
+.body-large{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:clamp(17px,1.3vw,21px);
+  font-weight:400;line-height:1.6;
+  max-width:70ch;letter-spacing:-.005em;
+}
+.body-large p{margin:0 0 1.4em;max-width:70ch}
+.body-large p:last-child{margin-bottom:0}
+.body-large strong,.body-large b{font-weight:700;color:var(--section-fg)}
+.body-large em{font-style:italic;color:var(--section-fg);font-weight:600}
+.body-large a{color:var(--section-fg);border-bottom:2px solid currentColor;font-weight:600}
+.body-large a:hover{color:#1c1108;border-bottom-color:#1c1108}
+
+p.lede{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:clamp(22px,2.4vw,34px);
+  font-weight:500;line-height:1.32;
+  max-width:34ch;letter-spacing:-.01em;
+  margin-bottom:4vh;
+}
+p.lede strong{color:var(--section-fg);font-weight:800}
+p.lede em{font-style:italic;color:var(--section-fg);font-weight:700}
+
+h2.h-display{
+  font-family:'Sonda','Cabinet Grotesk',sans-serif;
+  font-weight:900;font-size:clamp(34px,5vw,64px);
+  line-height:1;letter-spacing:.005em;text-transform:lowercase;
+  margin:2vh 0 3vh;
+  color:var(--section-fg);max-width:22ch;
+}
+h2.h-display em{font-style:normal;color:inherit}
+
+h3.h-mid{
+  font-family:'Sonda','Cabinet Grotesk',sans-serif;
+  font-weight:700;font-size:clamp(20px,2vw,28px);
+  text-transform:lowercase;letter-spacing:.005em;line-height:1.2;
+  margin:3vh 0 1vh;color:var(--section-fg);
+}
+
+/* ============ HERO ============ */
+.hero{
+  min-height:100vh;
+  display:flex;flex-direction:column;justify-content:center;align-items:center;
+  padding:8vh 5vw 8vh;text-align:center;position:relative;overflow:hidden;
+}
+.hero-blobs{
+  position:absolute;inset:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;
+  opacity:.5;
+}
+.hero-blobs .blob{will-change:transform;mix-blend-mode:multiply}
+.hero .container{position:relative;z-index:2}
+.hero-tagline{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:500;font-size:clamp(17px,1.5vw,22px);
+  line-height:1.45;max-width:52ch;margin:0 auto 3vh;color:#1c1108;
+}
+.hero-tagline strong{color:var(--section-fg);font-weight:800}
+.hero-tags{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin-top:1.5vh;margin-bottom:7vh}
+.hero-tag{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:700;font-size:11px;
+  letter-spacing:.18em;text-transform:lowercase;
+  padding:.6rem 1rem;border:2px solid #1c1108;border-radius:999px;
+  background:transparent;color:#1c1108;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.hero-tag:hover{transform:rotate(-3deg) scale(1.05)}
+.hero-tag.fill{background:var(--section-fg);color:#fff;border-color:var(--section-fg)}
+
+/* COVER IMAGE — HUGE */
+.cover-image{
+  margin:4vh auto 0;
+  width:100%;
+  max-width:min(1400px,95vw);
+  transition:transform .6s cubic-bezier(.2,.8,.2,1);
+}
+.cover-image img{
+  width:100%;height:auto;display:block;
+  border-radius:10px;
+  border:4px solid #1c1108;
+  box-shadow:22px 22px 0 var(--section-fg);
+}
+.cover-image:hover{transform:rotate(-1.5deg) translateY(-8px)}
+@media(max-width:900px){
+  .cover-image{max-width:96vw}
+  .cover-image img{border-radius:8px;box-shadow:10px 10px 0 var(--section-fg)}
+}
+
+.scroll-hint{
+  position:absolute;bottom:3vh;left:50%;transform:translateX(-50%);
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:600;font-size:11px;letter-spacing:.32em;text-transform:lowercase;
+  color:#1c1108;opacity:.55;text-align:center;
+}
+.scroll-hint::after{
+  content:"";display:block;width:2px;height:36px;
+  background:currentColor;margin:.8rem auto 0;
+  transform-origin:top;animation:scrollHint 2.4s ease-in-out infinite;
+}
+@keyframes scrollHint{
+  0%,100%{transform:scaleY(.2);opacity:.3}
+  50%{transform:scaleY(1);opacity:1}
+}
+
+/* ============ SECTION META ============ */
+.section-meta{
+  display:inline-flex;align-items:center;gap:14px;
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:12px;font-weight:700;letter-spacing:.3em;text-transform:lowercase;
+  color:var(--section-text);opacity:.6;
+  margin-bottom:3vh;
+}
+.section-meta::before{content:"";width:48px;height:3px;background:var(--section-fg);opacity:1;border-radius:2px}
+
+/* ============ TEXT GRID ============ */
+.text-grid{display:grid;grid-template-columns:1fr 1.4fr;gap:6vw;margin:4vh 0;align-items:start}
+@media(max-width:900px){.text-grid{grid-template-columns:1fr;gap:3vh}}
+
+/* ============ SCISSOR-BULLET LISTS ============ */
+ul.spec{list-style:none;margin:3vh 0;max-width:72ch}
+ul.spec li{
+  position:relative;padding:1.2rem 0 1.2rem 3.4rem;
+  font-size:clamp(15px,1.15vw,18px);line-height:1.6;
+  border-top:2px solid rgba(28,17,8,.12);
+}
+ul.spec li:last-child{border-bottom:2px solid rgba(28,17,8,.12)}
+.bg-dark ul.spec li,.bg-black ul.spec li{border-color:rgba(250,243,223,.18)}
+ul.spec li::before{
+  content:"";position:absolute;left:0;top:1.05rem;
+  width:24px;height:24px;
+  background-color:var(--section-fg);
+  -webkit-mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='6' cy='6' r='3'/><circle cx='6' cy='18' r='3'/><line x1='20' y1='4' x2='8.12' y2='15.88'/><line x1='14.47' y1='14.48' x2='20' y2='20'/><line x1='8.12' y1='8.12' x2='12' y2='12'/></svg>") center/contain no-repeat;
+          mask:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='6' cy='6' r='3'/><circle cx='6' cy='18' r='3'/><line x1='20' y1='4' x2='8.12' y2='15.88'/><line x1='14.47' y1='14.48' x2='20' y2='20'/><line x1='8.12' y1='8.12' x2='12' y2='12'/></svg>") center/contain no-repeat;
+}
+ul.spec li strong{font-weight:800;color:var(--section-fg)}
+ul.spec li em{font-style:italic;color:var(--section-fg);font-weight:600}
+ul.spec li a{color:var(--section-fg);border-bottom:2px solid currentColor;font-weight:600}
+ul.spec li a:hover{color:#1c1108;border-bottom-color:#1c1108}
+
+/* ============ STATS ============ */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.4rem;margin:5vh 0}
+.stat{
+  padding:3rem 1.5rem;text-align:center;
+  background:#faf3df;border:3px solid #1c1108;border-radius:24px;
+  box-shadow:8px 8px 0 var(--section-fg);
+  transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s;
+}
+.stat:hover{transform:translate(-2px,-2px) rotate(-1deg);box-shadow:12px 12px 0 var(--section-fg)}
+.stat .big{
+  display:block;font-family:'Sonda','Cabinet Grotesk',sans-serif;
+  font-weight:900;font-size:clamp(44px,5.5vw,76px);line-height:1;
+  color:var(--section-fg);letter-spacing:.005em;
+}
+.stat .lbl{
+  display:block;margin-top:.6rem;
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:.72rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:#1c1108;opacity:.7;
+}
+
+/* ============ CARDS ============ */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.6rem;margin:5vh 0}
+.card{
+  padding:3rem 2rem;
+  background:#faf3df;border:3px solid #1c1108;border-radius:24px;
+  box-shadow:8px 8px 0 var(--section-fg);
+  transition:transform .4s cubic-bezier(.2,.8,.2,1),box-shadow .4s;
+}
+.card:hover{transform:translate(-3px,-3px) rotate(-.6deg);box-shadow:12px 12px 0 var(--section-fg)}
+.card .num{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:800;font-size:.78rem;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--section-fg);display:block;margin-bottom:1rem;
+}
+.card h3{
+  font-family:'Sonda','Cabinet Grotesk',sans-serif;
+  font-weight:700;font-size:clamp(20px,2vw,28px);
+  text-transform:lowercase;letter-spacing:.005em;
+  margin:0 0 .8rem;color:#1c1108;
+}
+.card p{font-size:.98rem;line-height:1.6;margin:0;color:#1c1108;opacity:.85}
+
+/* ============ PULL QUOTE ============ */
+.pull{
+  margin:6vh 0;padding:2.5rem 3rem;
+  background:#faf3df;border:3px solid #1c1108;border-radius:32px;
+  box-shadow:10px 10px 0 var(--section-fg);
+  max-width:46ch;transform:rotate(-1deg);
+  transition:transform .4s cubic-bezier(.2,.8,.2,1);
+}
+.pull:hover{transform:rotate(0)}
+.pull p{
+  font-family:'Sonda','Cabinet Grotesk',sans-serif;
+  font-weight:700;font-size:clamp(22px,3vw,38px);line-height:1.1;
+  letter-spacing:.005em;text-transform:lowercase;
+  color:#1c1108;margin:0;
+}
+.pull p em{color:var(--section-fg);font-style:normal}
+
+/* ============ VIDEO ROW ============ */
+.video-row{display:grid;grid-template-columns:1fr 1fr;gap:2vw;margin:5vh 0}
+@media(max-width:900px){.video-row{grid-template-columns:1fr;gap:1.5rem}}
+.video-frame{
+  position:relative;aspect-ratio:16/9;
+  border-radius:20px;overflow:hidden;
+  border:3px solid #1c1108;
+  box-shadow:10px 10px 0 var(--section-fg);
+  background:#000;
+  transition:transform .4s cubic-bezier(.2,.8,.2,1);
+}
+.video-frame:hover{transform:translate(-3px,-3px)}
+.video-frame iframe{width:100%;height:100%;border:0;display:block}
+.video-caption{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:11px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;
+  color:currentColor;opacity:.7;
+  margin-top:1rem;text-align:center;
+}
+.video-note{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:13px;font-style:italic;
+  color:currentColor;opacity:.6;
+  margin-top:3vh;text-align:center;
+}
+
+/* ============ BOOKS BANNER ============ */
+.books-banner{margin:5vh auto;max-width:1280px;text-align:center}
+.books-banner img{
+  width:100%;height:auto;display:block;
+  border-radius:20px;
+  border:3px solid #1c1108;
+  box-shadow:14px 14px 0 var(--section-fg);
+}
+
+/* ============ HERO IMG ============ */
+.hero-img{margin:6vh auto;max-width:1280px;text-align:center}
+.hero-img img{
+  width:100%;height:auto;display:block;margin:0 auto;
+  border-radius:24px;
+  border:3px solid #1c1108;
+  box-shadow:14px 14px 0 var(--section-fg);
+}
+
+/* ============ CRAFT ROW — two smaller portrait images side by side ============ */
+.craft-row{
+  display:grid;grid-template-columns:1fr 1fr;gap:3vw;
+  margin:5vh auto;max-width:1100px;align-items:start;
+}
+.craft-row .craft-img{
+  margin:0;
+  transition:transform .5s cubic-bezier(.2,.8,.2,1);
+}
+.craft-row .craft-img img{
+  width:100%;height:auto;display:block;
+  border-radius:18px;
+  border:3px solid #1c1108;
+  box-shadow:10px 10px 0 var(--section-fg);
+}
+.craft-row .craft-img:nth-child(1){transform:rotate(-1.5deg)}
+.craft-row .craft-img:nth-child(2){transform:rotate(1.5deg)}
+.craft-row .craft-img:hover{transform:rotate(0) translateY(-4px)}
+@media(max-width:760px){.craft-row{grid-template-columns:1fr;gap:3vh}}
+
+/* ============ STORY BLOCK — newspaper / editorial style ============ */
+.story-block{
+  background:var(--section-bg);
+  padding:14vh 7vw;
+  border-bottom:1px solid rgba(28,17,8,.08);
+  transition:background-color .8s cubic-bezier(.2,.8,.2,1);
+}
+.story-inner{
+  max-width:1280px;margin:0 auto;
+  display:grid;grid-template-columns:1.3fr 1fr;gap:5vw;
+  align-items:start;
+}
+.story-block.reverse .story-inner{grid-template-columns:1fr 1.3fr}
+.story-block.reverse .story-inner .story-img-wrap{order:2}
+.story-block.reverse .story-inner .story-text-wrap{order:1}
+@media(max-width:900px){
+  .story-block{padding:10vh 5vw}
+  .story-inner,.story-block.reverse .story-inner{grid-template-columns:1fr;gap:4vh}
+  .story-block.reverse .story-inner .story-img-wrap{order:1}
+  .story-block.reverse .story-inner .story-text-wrap{order:2}
+}
+
+.story-img-wrap{margin:0}
+.story-img-wrap img{
+  width:100%;height:auto;display:block;
+  border-radius:10px;
+  box-shadow:0 30px 60px -25px rgba(28,17,8,.35);
+}
+
+.story-text-wrap{padding-top:1vh;display:flex;flex-direction:column;align-items:flex-start}
+.country-pill{
+  display:inline-block;
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:700;font-size:11px;letter-spacing:.28em;text-transform:uppercase;
+  padding:.55rem 1.05rem;border:2px solid #1c1108;border-radius:999px;
+  color:#1c1108;background:rgba(255,255,255,.35);
+  margin-bottom:1.5rem;
+}
+.story-headline{
+  font-family:'Sonda','Cabinet Grotesk',sans-serif;
+  font-weight:900;font-size:clamp(28px,3.4vw,46px);
+  line-height:1.05;letter-spacing:.002em;text-transform:lowercase;
+  color:#1c1108;margin-bottom:1.5rem;
+}
+.story-headline em{font-style:normal;color:var(--story-accent,#c97558)}
+.story-body{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:clamp(15px,1.15vw,18px);
+  line-height:1.65;color:#2a1f18;
+  margin:0 0 1.8rem;max-width:52ch;
+}
+.story-body em{font-style:italic;color:#1c1108;font-weight:600}
+.read-more{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:700;font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--story-accent,#c97558);
+  border-bottom:2px solid currentColor;
+  padding-bottom:.2rem;
+  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
+}
+.read-more:hover{transform:translateX(4px)}
+.read-more::after{content:" →"}
+
+/* ============ CTA ============ */
+.cta-mail{
+  display:inline-block;
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:700;font-size:clamp(22px,3.5vw,44px);
+  color:#faf3df;text-decoration:none;
+  letter-spacing:-.01em;
+  position:relative;margin-top:2rem;
+  transition:transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.cta-mail:hover{transform:translateY(-4px) rotate(-1deg)}
+.cta-mail::after{
+  content:"";position:absolute;left:0;right:0;bottom:-.08em;
+  height:5px;background:#e8d586;border-radius:3px;
+  transform:scaleX(.85);transform-origin:left;
+  transition:transform .4s cubic-bezier(.2,.8,.2,1);
+}
+.cta-mail:hover::after{transform:scaleX(1)}
+
+/* ============ FOOTER ============ */
+footer{
+  padding:4vh 6vw;text-align:center;
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:600;font-size:11px;
+  letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(250,243,223,.6);background:#1c1108;
+}
+
+/* ============ TOP BAR ============ */
+.top-bar{
+  position:fixed;top:0;left:0;right:0;z-index:60;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.4rem 2rem;pointer-events:none;
+  mix-blend-mode:difference;
+}
+.top-bar > *{pointer-events:auto}
+.brand-anchor{
+  font-family:'Sonda','Cabinet Grotesk',sans-serif;
+  font-weight:900;font-size:1.15rem;letter-spacing:.005em;text-transform:lowercase;
+  color:#fff;text-decoration:none;
+}
+.brand-anchor em{font-style:normal;color:#c97558}
+.top-meta{
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-weight:600;font-size:10px;
+  letter-spacing:.24em;text-transform:uppercase;
+  color:#fff;opacity:.7;
+}
+
+/* ============ MOBILE ============ */
+@media(max-width:720px){
+  section{padding:10vh 5vw}
+  .top-bar{padding:1rem 1.2rem}
+  .hero{padding:14vh 4vw 6vh}
+  .pull{padding:2rem 2rem;border-radius:24px}
+}
+</style>
+</head>
+<body>
+
+<!-- ============ PROGRESS + CURSOR ============ -->
+<div class="scroll-progress" id="scrollProgress"></div>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- ============ TOP BAR ============ -->
+<header class="top-bar">
+  <a href="#hero" class="brand-anchor">year of good news</a>
+  <span class="top-meta">Smatana</span>
+</header>
+
+<!-- ============ DOTS NAV ============ -->
+<nav class="dots-nav" id="dotsNav">
+  <button data-target="hero" data-label="hello" class="active"></button>
+  <button data-target="what" data-label="what"></button>
+  <button data-target="why" data-label="why"></button>
+  <button data-target="craft" data-label="craft"></button>
+  <button data-target="reach" data-label="books"></button>
+  <button data-target="stories-intro" data-label="stories"></button>
+  <button data-target="story-01" data-label="romeo"></button>
+  <button data-target="story-02" data-label="hal vaughan"></button>
+  <button data-target="story-03" data-label="grandma joy"></button>
+  <button data-target="story-04" data-label="penguins"></button>
+  <button data-target="story-05" data-label="davide"></button>
+  <button data-target="story-06" data-label="pandas"></button>
+  <button data-target="story-07" data-label="seeds"></button>
+  <button data-target="story-08" data-label="rhinos"></button>
+  <button data-target="story-09" data-label="kenichi"></button>
+  <button data-target="story-10" data-label="dog hero"></button>
+  <button data-target="next" data-label="series"></button>
+  <button data-target="visual" data-label="visual"></button>
+  <button data-target="education" data-label="education"></button>
+  <button data-target="audience" data-label="audience"></button>
+  <button data-target="funding" data-label="funding"></button>
+  <button data-target="cta" data-label="hello"></button>
+</nav>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="hero">
+  <!-- ambient floating shapes -->
+  <svg class="hero-blobs" aria-hidden="true" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice">
+    <circle class="blob b1" cx="180" cy="180" r="120" fill="#efd6cf"/>
+    <circle class="blob b2" cx="1020" cy="160" r="90" fill="#f5ebc3"/>
+    <circle class="blob b3" cx="950" cy="640" r="160" fill="#dee5d0"/>
+    <circle class="blob b4" cx="160" cy="660" r="80" fill="#d6dee7"/>
+    <circle class="blob b5" cx="600" cy="120" r="48" fill="#e3d6c0"/>
+  </svg>
+
+  <div class="container">
+    <h1 class="hero-title" id="heroTitle">
+      <span class="article" data-color="#c97558">a</span>
+      <span class="word" data-color="#b54a3a">year</span>
+      <span class="of" data-color="#5a6d40">of</span>
+      <span class="word" data-color="#d4a017">good</span>
+      <span class="word" data-color="#395676">news</span>
+    </h1>
+    <p class="hero-tagline">Real positive stories from around the world, retold as <strong>textile art</strong> - sewn and put together from old clothes, scarves, and carpets.</p>
+    <div class="hero-tags">
+      <span class="hero-tag fill">from book to series</span>
+      <span class="hero-tag">156 artworks</span>
+      <span class="hero-tag">3 published books</span>
+      <span class="hero-tag">cross-generational</span>
+    </div>
+    <div class="cover-image">
+      <img src="img/A Year of Good News-cover.jpg" alt="A Year of Good News — book cover by Martin Smatana" />
+    </div>
+  </div>
+  <div class="scroll-hint">scroll</div>
+</section>
+
+<!-- ============ WHAT ============ -->
+<section class="bg-white" id="what" style="--section-fg:#c97558">
+  <div class="container">
+    <div class="section-meta"><span>what it is</span></div>
+    <h2 class="display stacked">
+      <span class="line">good news</span>
+      <span class="line"><em>retold in fabric</em></span>
+    </h2>
+    <p class="lede">There is plenty of bad news everywhere - but many <strong>good things also happen every single day</strong>. They just get lost in the flood of negative headlines.</p>
+
+    <div class="text-grid">
+      <div class="body-large">
+        <p>Year of Good News is a project that collects real positive stories from all over the world and retells them through textile art - sewn and put together from old clothes, scarves, and carpets.</p>
+        <p>The idea is simple. This project highlights these small stories and brings them into the light.</p>
+      </div>
+      <div class="body-large">
+        <p>The project was created by <strong>Martin Smatana</strong> - an internationally recognized director of animated films.</p>
+      </div>
+    </div>
+
+    <div class="hero-img">
+      <img src="img/yogd2.jpg" alt="Textile illustration of cross-generational characters made from fabric" />
+    </div>
+  </div>
+</section>
+
+<!-- ============ WHY ============ -->
+<section class="bg-rose" id="why" style="--section-fg:#a8443c">
+  <div class="container">
+    <div class="section-meta"><span>why it was created</span></div>
+    <h2 class="display stacked">
+      <span class="line">born from</span>
+      <span class="line"><em>bad news</em></span>
+    </h2>
+
+    <div class="text-grid">
+      <div>
+        <p class="lede">The pandemic was the trigger - but today it is <strong>no longer the main theme of the project</strong>.</p>
+      </div>
+      <div class="body-large">
+        <p>The project was born out of bad news. In March 2020, when the pandemic started, Martin was looking for a way to stay calm and hopeful - something that would inspire him instead of bringing him down. So he purposefully started looking for good news from recent years.</p>
+        <p>His conclusion after two years of collecting: despite all the terrible things we read about every day, many beautiful things are also happening - we just easily overlook them. He decided to make these stories visible and tell them in his own way.</p>
+      </div>
+    </div>
+
+    <div class="hero-img" style="margin-top:6vh">
+      <img src="img/martins library of textiles.jpeg" alt="Martin's library of textiles - the raw materials of the project" />
+    </div>
+  </div>
+</section>
+
+<!-- ============ CRAFT ============ -->
+<section class="bg-mint" id="craft" style="--section-fg:#5a6d40">
+  <div class="container">
+    <div class="section-meta"><span>technique and method</span></div>
+    <h2 class="display stacked">
+      <span class="line">stitched</span>
+      <span class="line"><em>by hand</em></span>
+    </h2>
+    <p class="lede">The material is not accidental - it gives the pictures <strong>warmth, softness and a human touch</strong> that naturally fits the theme of good news.</p>
+
+    <div class="craft-row">
+      <div class="craft-img">
+        <img src="img/martin creating illustration.jpeg" alt="Martin Smatana working on a textile illustration at his studio table" />
+      </div>
+      <div class="craft-img">
+        <img src="img/martin and finished illustration.jpg" alt="Martin holding up a finished textile illustration" />
+      </div>
+    </div>
+
+    <div class="body-large">
+      <p>Week after week, Martin looked for positive news, saved them as pictures or cut them out of newspapers and magazines. He then <strong>hand-sewed</strong> each story using textiles - old clothes, scarves and carpets.</p>
+      <p>Martin had already used this technique in his animated films. Thanks to this, Year of Good News has an <em>instantly recognizable visual style</em> - soft, playful and full of detail.</p>
+      <p>What started as a hobby quickly became an internationally successful art project.</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat" style="--section-fg:#c97558"><span class="big">156</span><span class="lbl">textile artworks</span></div>
+      <div class="stat" style="--section-fg:#a3b5cf"><span class="big">3</span><span class="lbl">published books</span></div>
+      <div class="stat" style="--section-fg:#d49c9c"><span class="big">37</span><span class="lbl">cut-up sweaters</span></div>
+    </div>
+
+    <h2 class="h-display" style="--section-fg:#1c1108">see the artworks come to <em style="color:#c97558">life</em></h2>
+    <p class="body-large" style="max-width:60ch">Two short glimpses of how the textile pictures look and move - the soft, handmade signature of the whole project.</p>
+    <div class="video-row" style="--section-fg:#c97558">
+      <div>
+        <div class="video-frame">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/tX4gYYYBRXU?si=VvE4L8YdEeAW1_0S" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="video-caption">artwork in motion - one &nbsp;·&nbsp; <a href="https://www.youtube.com/watch?v=tX4gYYYBRXU" target="_blank" rel="noopener" style="color:inherit;border-bottom:1px solid currentColor">open in YouTube</a></div>
+      </div>
+      <div>
+        <div class="video-frame">
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/v4JvtgQSGPc?si=CU49C4sGuZt1J2_R" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+        <div class="video-caption">artwork in motion - two &nbsp;·&nbsp; <a href="https://www.youtube.com/watch?v=v4JvtgQSGPc" target="_blank" rel="noopener" style="color:inherit;border-bottom:1px solid currentColor">open in YouTube</a></div>
+      </div>
+    </div>
+    <p class="video-note">When the page is opened as a local file (file://), browsers may block YouTube embeds for security reasons. After publishing online (e.g. GitHub Pages), the embedded players work normally. The links above always open the videos directly on YouTube.</p>
+  </div>
+</section>
+
+<!-- ============ REACH (BOOKS) ============ -->
+<section class="bg-yellowsoft" id="reach" style="--section-fg:#c97558">
+  <div class="container">
+    <div class="section-meta"><span>publications and fan base</span></div>
+    <h2 class="display">books and press</h2>
+
+    <div class="books-banner">
+      <img src="img/BOOKS.jpg" alt="Three editions of A Year of Good News" />
+    </div>
+
+    <div class="hero-img" style="margin-top:8vh">
+      <img src="img/citylights1.JPG" alt="Touring exhibition of A Year of Good News artworks in a public square" />
+    </div>
+
+    <ul class="spec">
+      <li><strong>Three published books</strong>, translated into several languages and available across four countries: <a href="https://www.barnesandnoble.com/w/a-year-of-good-news-martin-smatana/1142171666" target="_blank" rel="noopener">United States</a>, United Kingdom, <a href="https://www.thalia.de/autor/martin+smatana-18995398/" target="_blank" rel="noopener">Germany</a> and <a href="https://product.kyobobook.co.kr/detail/S000061694011" target="_blank" rel="noopener">South Korea</a>.</li>
+      <li>The German edition (<em>Ein Jahr voller guter Nachrichten</em>, Pattloch Verlag) was at one point the <strong>third best-selling book in Germany</strong>.</li>
+      <li>Regularly posting new artworks on Instagram every week built a loyal community that looked forward to the next piece of good news.</li>
+      <li>Strong international media coverage - for example the Austrian magazine Woman, <a href="https://www.boredpanda.com/illustrations-a-year-of-good-news-martin-smatana/" target="_blank" rel="noopener">Bored Panda</a>, <a href="https://www.designboom.com/art/colorful-felt-figures-martin-smatana-illustration-10-good-news-12-29-2022/" target="_blank" rel="noopener">Designboom</a> and others.</li>
+      <li>Books available on <a href="https://www.amazon.de/stores/Martin-Smatana/author/B0BV6S7D4H?language=en&amp;ref=ap_rdr&amp;shoppingPortalEnabled=true" target="_blank" rel="noopener">Amazon (Martin Smatana author store)</a>.</li>
+    </ul>
+
+    <h2 class="h-display" style="--section-fg:#1c1108">a fan base that connects <em style="color:#c97558">generations</em></h2>
+    <p class="body-large" style="max-width:60ch">The project did not have just one target group:</p>
+    <ul class="spec">
+      <li>grandchildren buy the book for their grandparents to tell them at the end of the year: <em>"Look grandma - this year wasn't actually so bad - all these beautiful things happened"</em>;</li>
+      <li>adults give it to other adults as a Christmas gift;</li>
+      <li>several <strong>schools chose good news as their theme of the year</strong> - they had good news bulletin boards in the hallways and made their own fabric illustrations inspired by the project.</li>
+    </ul>
+    <p class="body-large" style="max-width:60ch">Year of Good News is not just for kids or just for adults - <em>it works across all ages</em>.</p>
+  </div>
+</section>
+
+<!-- ============ STORIES INTRO ============ -->
+<section class="bg-cream tight" id="stories-intro" style="--section-fg:#c97558">
+  <div class="container" style="max-width:1280px">
+    <div class="section-meta"><span>examples of good news</span></div>
+    <h2 class="display stacked smaller" style="align-items:flex-start;text-align:left">
+      <span class="line" style="color:#c97558">small</span>
+      <span class="line" style="color:#395676">true</span>
+      <span class="line" style="color:#5a6d40">kind</span>
+    </h2>
+    <p class="lede" style="max-width:46ch">A sample of the stories the project tells - <strong>each one a real thing that really happened</strong>.</p>
+  </div>
+</section>
+
+<!-- ============ STORY · ROMEO ============ -->
+<section class="story-block bg-paper" id="story-01" style="--story-accent:#c97558">
+  <div class="story-inner">
+    <div class="story-img-wrap"><img src="img/01.jpg" alt="Textile artwork - Romeo walking from Italy to London"/></div>
+    <div class="story-text-wrap">
+      <span class="country-pill">Italy → UK</span>
+      <h3 class="story-headline">A boy who <em>walked to grandma</em>.</h3>
+      <p class="story-body">An 11-year-old boy moved from England to Palermo, Italy. He had not seen his grandmother from London for over a year during the lockdown. As all the flights to London were cancelled due to the pandemics, he decided to walk. His parents first told him "No!" for 50 times until his father finally agreed to go with him. They walked across Italy, Switzerland and France, they got lost a few times, got bloody feets, fought off wild dogs and slept under the stars. After 93 days, 2 800 kilometres and two weeks in quarantine, they made it to Trafalgar Square so Romeo could finally give a hug to his granny who couldn't believe her eyes.</p>
+      <a href="https://www.italymagazine.com/featured-story/palermo-london-foot-romeos-inspiring-journey" target="_blank" rel="noopener" class="read-more">read more</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY · HAL ============ -->
+<section class="story-block bg-peach reverse" id="story-02" style="--story-accent:#a8443c">
+  <div class="story-inner">
+    <div class="story-img-wrap"><img src="img/02.jpg" alt="Textile artwork - Hal Vaughan on a plane with his daughter"/></div>
+    <div class="story-text-wrap">
+      <span class="country-pill">United States</span>
+      <h3 class="story-headline">Six flights to spend <em>Christmas together</em>.</h3>
+      <p class="story-body">A father who wanted to spend Christmas with his daughter bought tickets for all six flights she worked as a flight attendant so they could be together on the 24th and 25th of December while flying around the country.</p>
+      <a href="https://www.cnn.com/2018/12/27/us/dad-flight-attendant-daughter-christmas-trnd" target="_blank" rel="noopener" class="read-more">read more</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY · GRANDMA JOY ============ -->
+<section class="story-block bg-yellow" id="story-03" style="--story-accent:#a8443c">
+  <div class="story-inner">
+    <div class="story-img-wrap"><img src="img/03.jpg" alt="Textile artwork - Grandma Joy and her grandson Brad in national parks"/></div>
+    <div class="story-text-wrap">
+      <span class="country-pill">United States</span>
+      <h3 class="story-headline">Grandma Joy and the <em>61 national parks</em>.</h3>
+      <p class="story-body">After an 85-year-old grandma Joy admitted to her grandson Brad that she'd never seen the ocean or mountains, they have travelled all over the United States, covering 40 000 miles and visiting 61 national parks. Grandma Joy is now 91 years old and she is still travelling with her grandson.</p>
+      <a href="https://www.npr.org/2019/08/13/750709333/brad-ryan-and-his-grandma-joy-tour-national-parks-together" target="_blank" rel="noopener" class="read-more">read more</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY · PENGUINS ============ -->
+<section class="story-block bg-sage reverse" id="story-04" style="--story-accent:#4a5d2f">
+  <div class="story-inner">
+    <div class="story-img-wrap"><img src="img/04.jpg" alt="Textile artwork - a penguin in a tiny knitted jumper"/></div>
+    <div class="story-text-wrap">
+      <span class="country-pill">Australia</span>
+      <h3 class="story-headline">Tiny wool jumpers <em>for penguins</em>.</h3>
+      <p class="story-body">A 109-year-old man in Australia knitted woollen jumpers for penguins to help protect them after an oil spill in the ocean. Thanks to sweaters penguins stop swallowing the toxic oil while cleaning themselves.</p>
+      <a href="https://time.com/3706927/australia-penguin-sweaters/" target="_blank" rel="noopener" class="read-more">read more</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY · DAVIDE ============ -->
+<section class="story-block bg-bluesoft" id="story-05" style="--story-accent:#395676">
+  <div class="story-inner">
+    <div class="story-img-wrap"><img src="img/05.jpg" alt="Textile artwork - Davide Martinelli cycling with supplies"/></div>
+    <div class="story-text-wrap">
+      <span class="country-pill">Italy</span>
+      <h3 class="story-headline">A pro cyclist who <em>delivered groceries</em> in lockdown.</h3>
+      <p class="story-body">Italian professional cyclist Davide Martinelli uses his bike to deliver food and medicine to elderly residents in his hometown Lodetto in the Lombardy region of northern Italy. The village has neither a pharmacy nor a supermarket, so Martinelli makes a daily trip to Rovato - the next town over - to pick up supplies. <em>"I wanted to help the people who always support me during the season. It's time to give back to them."</em></p>
+      <a href="https://sports.nbcsports.com/2020/04/17/davide-martinelli-uses-bike-to-deliver-medicine-in-italy/" target="_blank" rel="noopener" class="read-more">read more</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY · RED PANDAS ============ -->
+<section class="story-block bg-peach reverse" id="story-06" style="--story-accent:#a8443c">
+  <div class="story-inner">
+    <div class="story-img-wrap"><img src="img/06.jpg" alt="Textile artwork - red pandas rescued from bush fire"/></div>
+    <div class="story-text-wrap">
+      <span class="country-pill">Australia</span>
+      <h3 class="story-headline">Red pandas in the <em>director's living room</em>.</h3>
+      <p class="story-body">The director of a zoo in New South Wales, Australia, brought home several red pandas saving them from a blazing bush fire.</p>
+      <a href="https://thehill.com/homenews/news/476429-zoo-director-saves-pandas-monkeys-from-australia-fire-by-taking-them-home/" target="_blank" rel="noopener" class="read-more">read more</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY · SEEDS ============ -->
+<section class="story-block bg-sage" id="story-07" style="--story-accent:#4a5d2f">
+  <div class="story-inner">
+    <div class="story-img-wrap"><img src="img/07.jpg" alt="Textile artwork - skydiver scattering seeds over the Amazon"/></div>
+    <div class="story-text-wrap">
+      <span class="country-pill">Brazil · Amazon</span>
+      <h3 class="story-headline">100 million seeds <em>from the sky</em>.</h3>
+      <p class="story-body">Brazilian skydiver Luigi Cani released 100 million seeds from 28 native trees while leaping from a plane over a deforested area of the Amazon rainforest.</p>
+      <a href="https://www.boredpanda.com/luigi-cani-released-100-million-seeds-over-amazon/" target="_blank" rel="noopener" class="read-more">read more</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY · RHINOS ============ -->
+<section class="story-block bg-beige reverse" id="story-08" style="--story-accent:#a8443c">
+  <div class="story-inner">
+    <div class="story-img-wrap"><img src="img/08.jpg" alt="Textile artwork - rhinos returning to Zinave National Park"/></div>
+    <div class="story-text-wrap">
+      <span class="country-pill">Mozambique</span>
+      <h3 class="story-headline">Rhinos come <em>home</em> after forty years.</h3>
+      <p class="story-body">After forty years, rhinos have been reintroduced to the Zinave National Park in Mozambique.</p>
+      <a href="https://www.peaceparks.org/rhino-return-to-zinave-national-park-mozambique-after-40-years/" target="_blank" rel="noopener" class="read-more">read more</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY · KENICHI ============ -->
+<section class="story-block bg-blue" id="story-09" style="--story-accent:#395676">
+  <div class="story-inner">
+    <div class="story-img-wrap"><img src="img/09.jpg" alt="Textile artwork - Kenichi Horie sailing across the Pacific"/></div>
+    <div class="story-text-wrap">
+      <span class="country-pill">Japan → USA</span>
+      <h3 class="story-headline">Kenichi crosses the Pacific - <em>again</em>.</h3>
+      <p class="story-body">In 1982, Japanese yachtsman Kenichi Horie was the first person to sail solo across the Pacific. He repeated his voyage sixty years later, becoming the oldest person to make a non-stop crossing from Japan to the United States.</p>
+      <a href="https://www.euronews.com/culture/2022/06/06/japanese-man-becomes-oldest-person-to-sail-pacific-ocean-solo-non-stop" target="_blank" rel="noopener" class="read-more">read more</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STORY · DOG HERO ============ -->
+<section class="story-block bg-lichen reverse" id="story-10" style="--story-accent:#4a5d2f">
+  <div class="story-inner">
+    <div class="story-img-wrap"><img src="img/10.jpg" alt="Textile artwork - hiker kept warm by his dog"/></div>
+    <div class="story-text-wrap">
+      <span class="country-pill">Croatia</span>
+      <h3 class="story-headline">A dog who <em>saved a life</em> with body heat.</h3>
+      <p class="story-body">A hiker who was injured while climbing in Croatia's mountains was saved from freezing to death by his dog. The animal lay on top of him, keeping him warm for 13 hours until they were reached by rescuers.</p>
+      <a href="https://www.thedailybeast.com/miracle-alaskan-malamute-saves-injured-hiker-grga-brkic-after-getting-stranded-in-croatian-mountains/" target="_blank" rel="noopener" class="read-more">read more</a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEXT ============ -->
+<section class="bg-white" id="next" style="--section-fg:#b54a3a">
+  <div class="container">
+    <div class="section-meta"><span>why we are building on it now</span></div>
+    <h2 class="display stacked">
+      <span class="line">an antidote</span>
+      <span class="line">to <em>doomscrolling</em></span>
+    </h2>
+    <p class="lede">How to teach children (and adults) <strong>to understand the world without being consumed by fear</strong>?</p>
+
+    <div class="text-grid">
+      <div class="body-large">
+        <p>Until now, this was a completed project for Martin - the books were published, translated and lived their own life. Now we want to bring it back to life, <em>but not by repeating the exact same format</em>.</p>
+        <p>The original "why" (the pandemic) is gone; the new "why" is more relevant than ever.</p>
+      </div>
+      <div class="body-large">
+        <p><strong>The new main theme:</strong> doomscrolling, anxiety from negative news, media literacy and mental well-being.</p>
+        <p>Year of Good News stops being about the pandemic and becomes <em>an antidote to a world that overwhelms us with bad news</em>.</p>
+        <p>The biggest advantage compared to other projects: <strong>we are not starting from scratch.</strong> We are building on a finished body of work - three books, over 150 illustrations, a proven brand and a ready-made aesthetic. <em>We have a world that people already know and love.</em></p>
+      </div>
+    </div>
+
+    <h2 class="h-display">from paper <em style="color:#1c1108">into motion</em></h2>
+    <p class="body-large" style="max-width:60ch">We are building the project as a single Intellectual Property (IP) with multiple layers, where each medium adds something new instead of just repeating the same thing.</p>
+
+    <div class="card-grid">
+      <div class="card" style="--section-fg:#c97558">
+        <span class="num">format · one</span>
+        <h3>one episode is one piece of good news</h3>
+        <p>Each episode will retell one real positive story.</p>
+      </div>
+      <div class="card" style="--section-fg:#a3b5cf">
+        <span class="num">format · two</span>
+        <h3>a connecting element</h3>
+        <p>Episodes will be linked by a uniform connecting element that unifies the whole series and sets it apart from a standard anthology. This element will <em>visit and carry</em> the stories without ever replacing their actual heroes.</p>
+      </div>
+      <div class="card" style="--section-fg:#8a9669">
+        <span class="num">format · three</span>
+        <h3>one season is one year</h3>
+        <p>Following the books - the season will go through the four seasons of the year, and at the end the viewer will look back and see that more good news gathered than fear.</p>
+      </div>
+      <div class="card" style="--section-fg:#d49c9c">
+        <span class="num">format · four</span>
+        <h3>short episodes</h3>
+        <p>A few minutes of good news - meaningful and the exact opposite of endlessly scrolling through bad news. Form and content matching.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ VISUAL CONCEPT ============ -->
+<section class="bg-dark" id="visual" style="--section-fg:#d4a017">
+  <div class="container">
+    <div class="section-meta" style="color:#faf3df"><span>visual and animation concept</span></div>
+    <h2 class="display stacked">
+      <span class="line">textile</span>
+      <span class="line"><em>stop-motion</em></span>
+    </h2>
+    <p class="lede" style="color:#faf3df">The series will <strong>literally bring the book illustrations to life</strong> - same technique that made the original illustrations, now set in motion.</p>
+
+    <ul class="spec">
+      <li><strong>Pure textile stop-motion animation</strong> - semi-plastic and textured.</li>
+      <li>Textile characters and backgrounds <em>lay on a glass surface and are filmed from above</em> using a vertically mounted DSLR camera.</li>
+      <li>Soft cinematic lighting and <strong>frame-by-frame</strong> animation.</li>
+    </ul>
+
+    <p class="body-large" style="color:#faf3df">A combination of the best of two worlds - the flat 2D layout where characters lie down, combined with the soft textile materials, real light and camera work of 3D puppet animation. The result is a unique artistic style.</p>
+  </div>
+</section>
+
+<!-- ============ EDUCATION ============ -->
+<section class="bg-mint" id="education" style="--section-fg:#5a6d40">
+  <div class="container">
+    <div class="section-meta"><span>education and community</span></div>
+    <h2 class="display stacked">
+      <span class="line">an</span>
+      <span class="line"><em>educational</em></span>
+      <span class="line">wrap</span>
+    </h2>
+    <p class="lede">Doing systematically what schools were already doing on their own.</p>
+
+    <div class="hero-img" style="margin:5vh auto">
+      <img src="img/children and their good news.JPG" alt="A child's own good news illustration made from textile - a birthday cake" />
+    </div>
+
+    <ul class="spec">
+      <li><strong>Workshops</strong> where children make their own textile good news.</li>
+      <li><strong>Worksheets and methodologies for schools</strong> - media literacy, handling emotions, critical reading of news.</li>
+      <li><strong>A traveling exhibition</strong> of the original artworks and the making-of the animation.</li>
+      <li><strong>Screenings followed by discussions</strong>.</li>
+    </ul>
+
+    <div class="pull"><p>education lives in the <em>wrapping</em> not in the story</p></div>
+
+    <p class="body-large">The series never lectures or moralizes - it tells stories and shows things. <em>The knowledge and context are carried by the materials around it.</em></p>
+
+    <div class="hero-img" style="margin-top:6vh">
+      <img src="img/exhibition 1.png" alt="The travelling exhibition of A Year of Good News artworks" />
+    </div>
+  </div>
+</section>
+
+<!-- ============ AUDIENCE ============ -->
+<section class="bg-rose" id="audience" style="--section-fg:#a8443c">
+  <div class="container">
+    <div class="section-meta"><span>audience</span></div>
+    <h2 class="display stacked">
+      <span class="line">a family</span>
+      <span class="line"><em>project</em></span>
+    </h2>
+    <p class="lede">Year of Good News is a family and intergenerational project - <strong>it is not just for kids</strong>.</p>
+
+    <div class="card-grid">
+      <div class="card" style="--section-fg:#a8443c">
+        <span class="num">layer · one</span>
+        <h3>a child</h3>
+        <p>understands the story and the emotion.</p>
+      </div>
+      <div class="card" style="--section-fg:#a3b5cf">
+        <span class="num">layer · two</span>
+        <h3>an adult</h3>
+        <p>(parent, grandparent, teacher) finds an antidote to their own fear of the world.</p>
+      </div>
+    </div>
+
+    <p class="body-large">We see this connection between generations as a <em>major strength and we protect it</em> - it is what sets this project apart from standard children's content.</p>
+  </div>
+</section>
+
+<!-- ============ FUNDING ============ -->
+<section class="bg-white" id="funding" style="--section-fg:#c97558">
+  <div class="container">
+    <div class="section-meta"><span>how we fund the project</span></div>
+    <h2 class="display stacked">
+      <span class="line">two kinds</span>
+      <span class="line">of funding</span>
+      <span class="line"><em>at once</em></span>
+    </h2>
+    <p class="lede">Audiovisual production funds <strong>and</strong> education / culture funds. This combination is its core strength and makes the funding more resilient.</p>
+
+    <h3 class="h-mid">series production</h3>
+    <ul class="spec">
+      <li><strong>Creative Europe MEDIA</strong> - development and production of the series. For Slovakia the <em>Mini-Slate</em> scheme is advantageous (designed for countries with lower production capacity, meaning less competition), or co-development and support for TV / online content.</li>
+      <li><strong>National sources:</strong> The Slovak Audiovisual Fund (AVF) and the broadcaster (RTVS / partner broadcasters) - development, production, broadcasting and mandatory national co-funding.</li>
+    </ul>
+
+    <h3 class="h-mid">transmedia and cultural layer</h3>
+    <ul class="spec">
+      <li><strong>Creative Europe — Creative Innovation Lab (CROSS)</strong> for the digital / interactive layer as a cross-sector innovation.</li>
+      <li><strong>Creative Europe — Culture</strong> for the traveling exhibition and cultural cooperation.</li>
+    </ul>
+
+    <h3 class="h-mid">educational package</h3>
+    <ul class="spec">
+      <li><strong>Erasmus+</strong> (KA210 for an easy start, KA220 for larger cooperation) - methodologies, partnerships with schools and teacher training.</li>
+      <li>Domestic cultural sources (<strong>FPU</strong>) and foundations.</li>
+    </ul>
+
+    <div class="pull"><p>developed as <em>a slate</em> - testing the film, the educational layer and the community impact all together, from day one</p></div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="bg-black" id="cta" style="--section-fg:#e8d586">
+  <div class="container" style="text-align:center;max-width:800px">
+    <div class="section-meta" style="justify-content:center;display:inline-flex;color:#faf3df"><span>let's talk</span></div>
+    <h2 class="display stacked" style="color:#faf3df;align-items:center;text-align:center">
+      <span class="line">say</span>
+      <span class="line"><em style="color:#e8d586">hello</em></span>
+    </h2>
+    <p class="body-large" style="color:#faf3df;margin:0 auto 1rem;text-align:center">
+      If any of this resonates with you - a fellow studio, a broadcaster, a teacher, a researcher, a fund officer, or just someone who reads to the end - we'd love to hear from you.
+    </p>
+    <a href="mailto:hello@smatana.com" class="cta-mail">hello@smatana.com</a>
+  </div>
+</section>
+
+<footer>
+  © Smatana
+</footer>
+
+<!-- ============ JS ============ -->
+<script>
+(()=>{
+  /* LENIS */
+  let lenis=null;
+  if(window.Lenis && matchMedia('(hover:hover)').matches){
+    lenis=new Lenis({duration:1.2,easing:t=>Math.min(1,1.001-Math.pow(2,-10*t)),smoothWheel:true});
+    function raf(t){lenis.raf(t);requestAnimationFrame(raf);}requestAnimationFrame(raf);
+    if(window.gsap && window.ScrollTrigger){
+      gsap.registerPlugin(ScrollTrigger);
+      lenis.on('scroll',ScrollTrigger.update);
+      gsap.ticker.add(t=>lenis.raf(t*1000));
+      gsap.ticker.lagSmoothing(0);
+    }
+  }
+
+  /* CURSOR */
+  (()=>{
+    const c=document.getElementById('cursor'),d=document.getElementById('cursorDot');
+    if(!c||!matchMedia('(hover:hover)').matches)return;
+    let mx=0,my=0,rx=0,ry=0;
+    window.addEventListener('mousemove',e=>{
+      mx=e.clientX;my=e.clientY;
+      d.style.transform=`translate(${mx}px,${my}px) translate(-50%,-50%)`;
+    });
+    function loop(){
+      rx+=(mx-rx)*.18;ry+=(my-ry)*.18;
+      c.style.transform=`translate(${rx}px,${ry}px) translate(-50%,-50%)`;
+      requestAnimationFrame(loop);
+    }loop();
+    document.addEventListener('mouseover',e=>{
+      if(e.target.closest('a,button,.card,.stat,.story-img-wrap,.video-frame,.pull,.hero-tag,.cover-image,.books-banner'))c.classList.add('is-hover');
+    });
+    document.addEventListener('mouseout',e=>{
+      if(e.target.closest('a,button,.card,.stat,.story-img-wrap,.video-frame,.pull,.hero-tag,.cover-image,.books-banner'))c.classList.remove('is-hover');
+    });
+  })();
+
+  /* PROGRESS BAR */
+  const bar=document.getElementById('scrollProgress');
+  function updateProgress(){
+    const h=document.documentElement.scrollHeight-window.innerHeight;
+    const p=h>0?(window.scrollY/h)*100:0;
+    if(bar)bar.style.width=p+'%';
+  }
+  window.addEventListener('scroll',updateProgress,{passive:true});
+  window.addEventListener('resize',updateProgress);
+  updateProgress();
+
+  /* DOTS NAV */
+  const dotButtons=document.querySelectorAll('.dots-nav button');
+  const sections=document.querySelectorAll('section[id]');
+  function setActiveDot(id){
+    dotButtons.forEach(b=>b.classList.toggle('active',b.dataset.target===id));
+  }
+  if(window.gsap && window.ScrollTrigger){
+    sections.forEach(sec=>{
+      ScrollTrigger.create({
+        trigger:sec,
+        start:'top 45%',
+        end:'bottom 45%',
+        onEnter:()=>setActiveDot(sec.id),
+        onEnterBack:()=>setActiveDot(sec.id)
+      });
+    });
+  }
+  if(window.gsap && window.ScrollToPlugin) gsap.registerPlugin(ScrollToPlugin);
+  dotButtons.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      const t=document.getElementById(btn.dataset.target);
+      if(!t)return;
+      if(lenis){lenis.scrollTo(t,{offset:0,duration:1.2});}
+      else if(window.gsap && window.ScrollToPlugin){gsap.to(window,{scrollTo:{y:t,offsetY:0},duration:1.1,ease:'power3.inOut'});}
+      else{t.scrollIntoView({behavior:'smooth'});}
+    });
+  });
+
+  /* HERO TITLE — wwwrap-style reveal (chars unroll + bounce) */
+  (()=>{
+    if(!window.gsap)return;
+    const title=document.getElementById('heroTitle');
+    if(!title)return;
+    const words=title.querySelectorAll('.word, .article, .of');
+    words.forEach(w=>{
+      const text=w.textContent;
+      const color=w.dataset.color||'#1c1108';
+      w.style.color=color;
+      w.innerHTML=[...text].map(ch=>`<span class="ch" style="display:inline-block">${ch===' '?'&nbsp;':ch}</span>`).join('');
+    });
+    const allChars=title.querySelectorAll('.ch');
+    gsap.set(words,{scaleY:0,transformOrigin:'50% 100%',rotation:-2});
+    gsap.set(allChars,{rotation:-180,opacity:0,y:-16});
+    const tl=gsap.timeline({delay:.15});
+    words.forEach((w,i)=>{
+      const chars=w.querySelectorAll('.ch');
+      tl.to(w,{scaleY:1,rotation:0,duration:.7,ease:'elastic.out(1, 0.55)'},i*0.13);
+      tl.to(chars,{rotation:0,opacity:1,y:0,duration:.55,stagger:.04,ease:'back.out(2.4)'},i*0.13+.18);
+    });
+  })();
+
+  /* SECTION HEADINGS — SplitText-style char reveal on scroll */
+  if(window.gsap && window.ScrollTrigger){
+    gsap.utils.toArray('h2.h-display, h2.display:not(#heroTitle)').forEach(h=>{
+      if(h.dataset.splitDone)return;
+      h.dataset.splitDone='1';
+      const lines=h.querySelectorAll('.line');
+      const targets=lines.length?lines:[h];
+      targets.forEach(line=>{
+        const html=line.innerHTML;
+        if(html.includes('class="ch"'))return;
+        // wrap text nodes only
+        const walker=document.createTreeWalker(line,NodeFilter.SHOW_TEXT);
+        const nodes=[];let n;
+        while(n=walker.nextNode())nodes.push(n);
+        nodes.forEach(tn=>{
+          const frag=document.createDocumentFragment();
+          [...tn.textContent].forEach(c=>{
+            const s=document.createElement('span');
+            s.className='ch';s.style.display='inline-block';
+            s.textContent=c===' '?' ':c;
+            frag.appendChild(s);
+          });
+          tn.parentNode.replaceChild(frag,tn);
+        });
+      });
+      const chars=h.querySelectorAll('.ch');
+      gsap.from(chars,{
+        y:60,opacity:0,rotation:6,duration:.85,ease:'expo.out',
+        stagger:{each:.025,from:'start'},
+        scrollTrigger:{trigger:h,start:'top 86%',toggleActions:'play none none reverse'}
+      });
+    });
+  }
+
+  /* REVEAL ANIMATIONS — for non-heading content */
+  if(window.gsap && window.ScrollTrigger){
+    gsap.utils.toArray('.section-meta, p.lede, .text-grid > div, .card, .stat, .pull, .video-frame, .books-banner, ul.spec, .story-img-wrap, .story-text-wrap, .hero-img, .cover-image').forEach(el=>{
+      gsap.from(el,{
+        opacity:0,y:32,duration:.9,ease:'expo.out',
+        scrollTrigger:{trigger:el,start:'top 88%',toggleActions:'play none none reverse'}
+      });
+    });
+    /* Subtle parallax on all images inside .hero-img, .cover-image, .books-banner, .story-img-wrap */
+    gsap.utils.toArray('.hero-img img, .cover-image img, .books-banner img, .story-img-wrap img').forEach(img=>{
+      gsap.fromTo(img,{yPercent:-4},{yPercent:4,ease:'none',
+        scrollTrigger:{trigger:img,start:'top bottom',end:'bottom top',scrub:1.2}});
+    });
+    /* Stats counter-up */
+    gsap.utils.toArray('.stat .big').forEach(el=>{
+      const txt=el.textContent.trim();
+      const m=txt.match(/^(\d+)/);
+      if(!m)return;
+      const target=parseInt(m[1],10),suffix=txt.slice(m[1].length);
+      const o={v:0};
+      ScrollTrigger.create({trigger:el,start:'top 85%',once:true,onEnter:()=>{
+        gsap.to(o,{v:target,duration:1.4,ease:'power3.out',onUpdate:()=>{el.textContent=Math.round(o.v)+suffix;}});
+      }});
+    });
+    /* Hero tags subtle floating loop */
+    gsap.utils.toArray('.hero-tag').forEach((tag,i)=>{
+      gsap.to(tag,{y:'+=4',duration:1.8+i*.15,yoyo:true,repeat:-1,ease:'sine.inOut',delay:i*.12});
+    });
+
+    /* Ambient hero blobs — slow drift loops */
+    gsap.utils.toArray('.hero-blobs .blob').forEach((b,i)=>{
+      const dx=gsap.utils.random(-30,30), dy=gsap.utils.random(-20,20);
+      gsap.to(b,{x:dx,y:dy,duration:6+i*1.4,yoyo:true,repeat:-1,ease:'sine.inOut'});
+      gsap.fromTo(b,{scale:.9,transformOrigin:'50% 50%'},{scale:1.1,duration:4+i,yoyo:true,repeat:-1,ease:'sine.inOut',delay:i*.4});
+    });
+
+    /* Hero blobs parallax with scroll */
+    gsap.to('.hero-blobs',{yPercent:20,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:1}});
+  }
+
+  /* Magnetic hover on key elements */
+  if(matchMedia('(hover:hover)').matches){
+    document.querySelectorAll('.hero-tag, .cta-mail, .stat, .read-more').forEach(el=>{
+      el.addEventListener('mousemove',e=>{
+        const r=el.getBoundingClientRect();
+        const x=(e.clientX-r.left-r.width/2)*.18;
+        const y=(e.clientY-r.top-r.height/2)*.18;
+        if(window.gsap)gsap.to(el,{x,y,duration:.4,ease:'power3.out'});
+      });
+      el.addEventListener('mouseleave',()=>{
+        if(window.gsap)gsap.to(el,{x:0,y:0,duration:.6,ease:'elastic.out(1, .5)'});
+      });
+    });
+  }
+
+  /* Drawing-line decoration on long body sections */
+  if(window.gsap && window.ScrollTrigger){
+    gsap.utils.toArray('.pull').forEach(p=>{
+      p.style.position='relative';
+      const line=document.createElement('span');
+      line.style.cssText='position:absolute;left:-3px;top:0;bottom:0;width:4px;background:currentColor;transform-origin:top;transform:scaleY(0);border-radius:2px;color:var(--section-fg, #c97558);opacity:.85;pointer-events:none';
+      p.appendChild(line);
+      gsap.to(line,{scaleY:1,duration:1.1,ease:'expo.out',
+        scrollTrigger:{trigger:p,start:'top 80%',toggleActions:'play none none reverse'}});
+    });
+  }
+
+  /* BRAND SCROLL TO HERO */
+  document.querySelector('.brand-anchor')?.addEventListener('click',e=>{
+    e.preventDefault();
+    const t=document.getElementById('hero');
+    if(lenis)lenis.scrollTo(t,{duration:1});
+    else t.scrollIntoView({behavior:'smooth'});
+  });
+})();
+</script>
+
+</body>
+</html>
